@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: kuvaka-chat-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.18
+
+  - type: static
+    name: kuvaka-chat-frontend
+    buildCommand: cd frontend && cp index.html public/
+    staticPublishPath: frontend/public
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: kuvaka-chat-backend
+          type: web 

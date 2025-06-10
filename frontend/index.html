@@ -154,7 +154,11 @@
         const clientId = Math.random().toString(36).substr(2, 9);
 
         function connect() {
-            ws = new WebSocket(`ws://127.0.0.1:8000/ws/${clientId}`);
+            const backendUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? 'ws://127.0.0.1:8000'
+                : `wss://${window.location.hostname}`;
+            
+            ws = new WebSocket(`${backendUrl}/ws/${clientId}`);
             
             ws.onmessage = function(event) {
                 const data = JSON.parse(event.data);

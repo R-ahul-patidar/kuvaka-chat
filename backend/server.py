@@ -3,8 +3,19 @@ from typing import List, Dict
 import json
 import uvicorn
 from datetime import datetime
+import os
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 class ConnectionManager:
     def __init__(self):
@@ -81,4 +92,6 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
             )
 
 if __name__ == "__main__":
-    uvicorn.run("server:app", host="127.0.0.1", port=8000, reload=True) 
+    port = int(os.getenv("PORT", 8000))
+    host = os.getenv("HOST", "0.0.0.0")
+    uvicorn.run("server:app", host=host, port=port, reload=True) 
