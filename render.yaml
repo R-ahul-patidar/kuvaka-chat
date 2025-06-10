@@ -8,9 +8,9 @@ services:
       - key: PYTHON_VERSION
         value: 3.9.18
 
-  - type: static
+  - type: static-site
     name: kuvaka-chat-frontend
-    buildCommand: cd frontend && cp index.html public/
+    buildCommand: mkdir -p frontend/public && cp frontend/index.html frontend/public/
     staticPublishPath: frontend/public
     envVars:
       - key: BACKEND_URL
